@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>थारू ख्रिष्ट्रिय भजन</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        :root {
+            --primary: #7c3a2b;
+            --primary-light: #a0523a;
+            --primary-dark: #5a2a1e;
+            --bg: #f8f4f0;
+            --card: #ffffff;
+            --text: #1e1e1e;
+            --text-light: #6b6b6b;
+            --border: #e5ddd8;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.dark {
+            --bg: #121212;
+            --card: #1e1e1e;
+            --text: #e8e0d8;
+            --text-light: #9a9a9a;
+            --border: #333;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --primary: #b8865b;
+            --primary-light: #d4a373;
+            --primary-dark: #8b6b4a;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            transition: background var(--transition), color var(--transition);
+            min-height: 100vh;
+        }
+
+        /* ===== SPLASH ===== */
+        #splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #7c3a2b, #5a2a1e);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            color: white;
+            text-align: center;
+            transition: opacity 0.6s ease;
+        }
+        #splash.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #splash .cross-icon {
+            font-size: 72px;
+            margin-bottom: 12px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        #splash h1 {
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        #splash .sub {
+            font-size: 15px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+        #splash .loader {
+            margin-top: 28px;
+            width: 36px;
+            height: 36px;
+            border: 3px solid rgba(255,255,255,0.15);
+            border-top: 3px solid #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: var(--primary);
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+        }
+        .header .hamburger {
+            font-size: 26px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            padding: 4px;
+        }
+        .header h1 {
+            font-size: 18px;
+            color: white;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+        .header .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* ===== SIDE MENU ===== */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            display: none;
+            backdrop-filter: blur(2px);
+        }
+        .menu-overlay.open { display: block; }
+        .menu-panel {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 300px;
+            height: 100%;
+            background: var(--card);
+            z-index: 300;
+            padding: 24px 20px;
+            transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            box-shadow: 4px 0 30px rgba(0,0,0,0.15);
+        }
+        .menu-panel.open { left: 0; }
+        .menu-panel .close-btn {
+            font-size: 28px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            float: right;
+            color: var(--primary);
+            padding: 0 4px;
+        }
+        .menu-panel h2 {
+            color: var(--primary);
+            font-size: 19px;
+            margin: 30px 0 12px 0;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 8px;
+            font-weight: 700;
+        }
+        .menu-panel .label {
+            font-size: 11px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-top: 18px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .menu-panel a {
+            display: block;
+            padding: 10px 14px;
+            margin: 3px 0;
+            border-radius: 12px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .menu-panel a:hover { background: var(--border); }
+        .menu-panel a.active {
+            background: var(--primary);
+            color: white;
+        }
+        body.dark .menu-panel a.active { background: var(--primary); color: #000; }
+
+        /* ===== ADMIN SECTION ===== */
+        .admin-section {
+            margin-top: 20px;
+            border-top: 2px solid var(--border);
+            padding-top: 16px;
+        }
+        .admin-section .admin-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 18px;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            font-weight: 700;
+            transition: opacity 0.2s;
+        }
+        .admin-section .admin-btn:hover { opacity: 0.9; }
+        .admin-panel {
+            display: none;
+            margin-top: 12px;
+            background: var(--card);
+            padding: 16px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+        }
+        .admin-panel.open { display: block; }
+        .admin-panel input, .admin-panel textarea, .admin-panel select {
+            width: 100%;
+            padding: 10px 14px;
+            margin: 6px 0;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            background: var(--bg);
+            color: var(--text);
+            transition: border 0.2s;
+        }
+        .admin-panel input:focus, .admin-panel textarea:focus, .admin-panel select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .admin-panel textarea { min-height: 70px; resize: vertical; }
+        .admin-panel .btn-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .admin-panel .btn-group button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            background: var(--primary);
+            color: white;
+            font-size: 14px;
+            transition: opacity 0.2s;
+        }
+        .admin-panel .btn-group button:hover { opacity: 0.85; }
+        .admin-panel .btn-group button.danger { background: #c0392b; }
+        .admin-panel .btn-group button.secondary { background: var(--text-light); }
+        .admin-panel .status-msg {
+            font-size: 13px;
+            margin-top: 8px;
+            color: #27ae60;
+            font-weight: 600;
+        }
+        .admin-panel .status-msg.error { color: #c0392b; }
+
+        /* Data mgmt */
+        .data-mgmt {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .data-mgmt button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            background: #3b82f6;
+            color: white;
+            font-size: 13px;
+            transition: opacity 0.2s;
+        }
+        .data-mgmt button:hover { opacity: 0.85; }
+        .data-mgmt button.import-btn { background: #22a55a; }
+        .data-mgmt input[type="file"] { display: none; }
+
+        /* ===== MAIN CONTAINER ===== */
+        .container {
+            padding: 16px;
+            max-width: 640px;
+            margin: auto;
+        }
+        .search-box {
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid var(--border);
+            border-radius: 30px;
+            font-size: 15px;
+            outline: none;
+            background: var(--card);
+            color: var(--text);
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+        .search-box:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(124, 58, 43, 0.1);
+        }
+        body.dark .search-box:focus {
+            box-shadow: 0 0 0 4px rgba(184, 134, 91, 0.15);
+        }
+        .stats {
+            font-size: 13px;
+            color: var(--text-light);
+            text-align: right;
+            margin: 10px 0 14px 0;
+            font-weight: 500;
+        }
+
+        /* ===== BHAJAN CARDS ===== */
+        .bhajan-item {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--primary);
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .bhajan-item:active { transform: scale(0.98); }
+        .bhajan-item h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text);
+            padding-right: 44px;
+            line-height: 1.4;
+        }
+        .bhajan-item .badge {
+            font-size: 11px;
+            background: var(--primary-light);
+            color: #fff;
+            padding: 3px 14px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 6px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        body.dark .bhajan-item .badge {
+            color: #1a1a1a;
+        }
+        .bhajan-item .fav-star {
+            position: absolute;
+            right: 14px;
+            top: 16px;
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #ccc;
+            transition: transform 0.2s, color 0.2s;
+        }
+        .bhajan-item .fav-star:active { transform: scale(0.85); }
+        .bhajan-item .fav-star.active { color: #e63946; }
+        .empty-msg {
+            text-align: center;
+            color: var(--text-light);
+            margin-top: 60px;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        .empty-msg .emoji { font-size: 48px; display: block; margin-bottom: 12px; }
+
+        /* ===== LYRICS PAGE ===== */
+        .lyrics-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            z-index: 400;
+            padding: 24px 20px;
+            overflow-y: auto;
+            display: none;
+            flex-direction: column;
+            animation: slideUp 0.35s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .lyrics-page.open { display: flex; }
+        .lyrics-page .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .lyrics-page .back {
+            font-size: 34px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--primary);
+            padding: 0 4px;
+        }
+        .lyrics-page .nav-btn {
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary);
+            padding: 0 8px;
+        }
+        .lyrics-page .title {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text);
+            margin: 4px 0 2px 0;
+            line-height: 1.3;
+        }
+        .lyrics-page .cat {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .lyrics-page .youtube-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 8px;
+        }
+        .lyrics-page .youtube-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 18px;
+            background: #ff0000;
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .lyrics-page .youtube-link:hover { opacity: 0.85; }
+        .lyrics-page .youtube-link.hidden { display: none; }
+        .lyrics-page .zoom {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin: 6px 0 12px 0;
+        }
+        .lyrics-page .zoom button {
+            padding: 4px 18px;
+            border: none;
+            border-radius: 30px;
+            background: var(--primary-light);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        body.dark .lyrics-page .zoom button { color: #1a1a1a; }
+        .lyrics-page .zoom button:hover { opacity: 0.8; }
+        .lyrics-page .lyrics-text {
+            font-size: 18px;
+            line-height: 2.1;
+            white-space: pre-wrap;
+            flex: 1;
+            margin: 4px 0 12px 0;
+            color: var(--text);
+            font-weight: 400;
+        }
+        .lyrics-page .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding-bottom: 8px;
+        }
+        .lyrics-page .actions button {
+            padding: 10px 22px;
+            border-radius: 30px;
+            border: none;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .lyrics-page .actions button:hover { opacity: 0.8; }
+        .lyrics-page .share { background: #3b82f6; color: white; }
+        .lyrics-page .random { background: var(--primary); color: white; }
+        body.dark .lyrics-page .random { color: #1a1a1a; }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 24px;
+            padding-bottom: 12px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== SPLASH ===== -->
+    <div id="splash">
+        <div class="cross-icon">✝️</div>
+        <h1>थारू ख्रिष्ट्रिय भजन</h1>
+        <div class="sub">Tharu Christian Bhajan</div>
+        <div class="loader"></div>
+    </div>
+
+    <!-- ===== HEADER ===== -->
+    <div class="header">
+        <button class="hamburger" id="menuToggle">☰</button>
+        <h1>✝️ थारू ख्रिष्ट्रिय भजन</h1>
+        <span class="badge" id="totalCount">0</span>
+    </div>
+
+    <!-- ===== SIDE MENU ===== -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="menu-panel" id="menuPanel">
+        <button class="close-btn" id="closeMenu">✕</button>
+        <h2>📂 📖 </h2>
+        <div class="label">🎵 भजन</div>
+        <a href="#" data-category="all" class="active">📖 सक्कु भजन</a>
+        <a href="#" data-category="bhajan">🕊️ भजन</a>
+        <a href="#" data-category="chorus">🎶  कोरस</a>
+        <a href="#" data-category="new">✨ लौव गित</a>
+        <a href="#" data-category="christmas">🎄 ख्रिष्टमस</a>
+        <a href="#" data-category="other">📖 अन्य</a>
+        <a href="#" data-category="other">📖 सजना</a>
+        <a href="#" data-category="other">📖 धमार</a>
+        <div class="label">⭐ सुविधाहरू</div>
+        <a href="#" id="menuFav">❤️ मन पर्ना भजन</a>
+        <a href="#" id="menuRandom">🎲 आजक भजन</a>
+        <a href="#" id="menuDark">🌙 रातो मोड</a>
+
+        <!-- Admin -->
+        <div class="admin-section">
+            <button class="admin-btn" id="adminToggle">🔐 एडमिन</button>
+            <div class="admin-panel" id="adminPanel">
+                <input type="password" id="adminPass" placeholder="पासवर्ड">
+                <div style="display:flex; gap:8px; margin-bottom:10px;">
+                    <button id="adminLogin" style="flex:1; padding:8px; border:none; border-radius:30px; background:var(--primary); color:#fff; font-weight:700; cursor:pointer;">लगइन</button>
+                    <button id="adminLogout" style="flex:1; padding:8px; border:none; border-radius:30px; background:var(--text-light); color:#fff; font-weight:700; cursor:pointer;">लगआउट</button>
+                </div>
+                <div id="adminContent" style="display:none;">
+                    <p style="font-weight:700; margin:6px 0;">➕ नयाँ भजन</p>
+                    <input type="text" id="newTitle" placeholder="शीर्षक">
+                    <textarea id="newLyrics" placeholder="गीत (प्रति लाइन)"></textarea>
+                    <select id="newCategorySelect">
+                        <option value="bhajan">🕊️ भजन</option>
+                        <option value="chorus">🎶 कोरस</option>
+                        <option value="new">✨ लौव गित</option>
+                          <option value="new">✨ सजना</option>
+                          <option value="new">✨ धमार</option>
+                        <option value="christmas">🎄 ख्रिष्टमस </option>
+                        <option value="other">📖 अन्य</option>
+                    </select>
+                    <input type="text" id="newYoutube" placeholder="YouTube लिंक (वैकल्पिक)">
+                    <div class="btn-group">
+                        <button id="addBhajanBtn">➕ थप्नुहोस्</button>
+                    </div>
+
+                    <p style="font-weight:700; margin:14px 0 4px;">✏️ सम्पादन / मेट्नुहोस्</p>
+                    <select id="editSelect" style="margin-bottom:4px;"></select>
+                    <input type="text" id="editTitle" placeholder="शीर्षक">
+                    <textarea id="editLyrics" placeholder="गीत"></textarea>
+                    <select id="editCategorySelect">
+                        <option value="bhajan">🕊️ भजन</option>
+                        <option value="chorus">🎶 कोरस </option>
+                        <option value="new">✨ लौव गित </option>
+                          <option value="new">✨ सजना</option>
+                          <option value="new">✨ धमार</option>
+                        <option value="christmas">🎄 ख्रिष्टमस </option>
+                        <option value="other">📖 अन्य</option>
+                    </select>
+                    <input type="text" id="editYoutube" placeholder="YouTube लिंक">
+                    <div class="btn-group">
+                        <button id="updateBhajanBtn">💾 सेभ करो </button>
+                        <button id="deleteBhajanBtn" class="danger">🗑️ मेटा देउ</button>
+                    </div>
+                    <div id="adminStatus" class="status-msg"></div>
+
+                    <!-- Export / Import -->
+                    <div class="data-mgmt">
+                        <button id="exportData">📤 सुरक्षित से धारो</button>
+                        <button class="import-btn" id="importBtn">📥 भजन लेउ</button>
+                        <input type="file" id="fileInput" accept=".json">
+                    </div>
+                    <div id="importStatus" class="status-msg"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MAIN ===== -->
+    <div class="container">
+        <input type="text" class="search-box" id="searchInput" placeholder="🔍 भजन खोज्नुहोस्..." />
+        <div class="stats" id="statsDisplay">कौनो भजन नैहो</div>
+        <div id="bhajanList"></div>
+        <div class="empty-msg" id="emptyMsg" style="display:none;">
+            <span class="emoji">🙏</span>
+            कौनो भजन नै मिलल🥹
+        </div>
+        <div class="footer">✝️ Tharu christan bhajan •
+            bishwas church</div>
+    </div>
+
+    <!-- ===== LYRICS ===== -->
+    <div class="lyrics-page" id="lyricsPage">
+        <div class="top">
+            <button class="back" id="lyricsBack">‹</button>
+            <div>
+                <button class="nav-btn" id="prevBhajan">‹‹</button>
+                <button class="nav-btn" id="nextBhajan">››</button>
+            </div>
+        </div>
+        <div class="title" id="lyricsTitle"></div>
+        <div class="cat" id="lyricsCategory"></div>
+        <div class="youtube-row">
+            <a href="#" class="youtube-link" id="youtubeLink" target="_blank">▶️ YouTube</a>
+        </div>
+        <div class="zoom">
+            <button id="zoomOut">A−</button>
+            <button id="zoomReset">A</button>
+            <button id="zoomIn">A+</button>
+        </div>
+        <div class="lyrics-text" id="lyricsText"></div>
+        <div class="actions">
+            <button class="share" id="shareBtn">📤 शेयर</button>
+            <button class="random" id="randomBtn">🎲 अर्को</button>
+        </div>
+    </div>
+
+    <script>
+        // ===== NO DEFAULT BHAJANS — खाली सुरु =====
+        let bhajans = [];
+        let favouriteIds = [];
+
+        // ===== DATA LOAD/SAVE =====
+        function loadData() {
+            const stored = localStorage.getItem('tharuBhajans');
+            if (stored) {
+                try {
+                    bhajans = JSON.parse(stored);
+                } catch (e) {
+                    bhajans = [];
+                }
+            } else {
+                bhajans = [];
+            }
+
+            const fav = localStorage.getItem('tharuFavs');
+            favouriteIds = fav ? JSON.parse(fav) : [];
+            saveData();
+        }
+
+        function saveData() {
+            localStorage.setItem('tharuBhajans', JSON.stringify(bhajans));
+            localStorage.setItem('tharuFavs', JSON.stringify(favouriteIds));
+        }
+
+        // ===== STATE =====
+        let currentCategory = 'all';
+        let currentSearch = '';
+        let currentLyricsId = null;
+        let fontSize = 18;
+        let isAdmin = false;
+        const ADMIN_PASSWORD = 'tharu@123';
+
+        // ===== SPLASH =====
+        window.addEventListener('load', function() {
+            loadData();
+            setTimeout(() => {
+                document.getElementById('splash').classList.add('hidden');
+            }, 1000);
+            renderBhajans();
+            populateEditSelect();
+            if (bhajans.length) {
+                document.getElementById('editCategorySelect').value = bhajans[0].category;
+            }
+        });
+
+        // ===== RENDER =====
+        function renderBhajans() {
+            const container = document.getElementById('bhajanList');
+            const empty = document.getElementById('emptyMsg');
+            const stats = document.getElementById('statsDisplay');
+
+            let filtered = [...bhajans];
+            if (currentCategory !== 'all') {
+                if (currentCategory === 'favourites') {
+                    filtered = filtered.filter(b => favouriteIds.includes(b.id));
+                } else {
+                    filtered = filtered.filter(b => b.category === currentCategory);
+                }
+            }
+            if (currentSearch.trim() !== '') {
+                const term = currentSearch.trim().toLowerCase();
+                filtered = filtered.filter(b =>
+                    b.title.toLowerCase().includes(term) ||
+                    b.lyrics.toLowerCase().includes(term)
+                );
+            }
+
+            stats.textContent = filtered.length + ' वटा भजन';
+            document.getElementById('totalCount').textContent = bhajans.length;
+
+            if (filtered.length === 0) {
+                container.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+
+            let html = '';
+            filtered.forEach(b => {
+                const isFav = favouriteIds.includes(b.id);
+                const catLabel = b.category.charAt(0).toUpperCase() + b.category.slice(1);
+                html += `<div class="bhajan-item" data-id="${b.id}">`;
+                html += `<button class="fav-star ${isFav ? 'active' : ''}" data-id="${b.id}">${isFav ? '❤️' : '🤍'}</button>`;
+                html += `<h3>${b.title}</h3>`;
+                html += `<span class="badge">${catLabel}</span>`;
+                html += '</div>';
+            });
+            container.innerHTML = html;
+
+            document.querySelectorAll('.bhajan-item').forEach(el => {
+                el.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('fav-star')) return;
+                    const id = parseInt(this.dataset.id);
+                    openLyrics(id);
+                });
+            });
+            document.querySelectorAll('.fav-star').forEach(el => {
+                el.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const id = parseInt(this.dataset.id);
+                    const idx = favouriteIds.indexOf(id);
+                    if (idx !== -1) favouriteIds.splice(idx, 1);
+                    else favouriteIds.push(id);
+                    saveData();
+                    renderBhajans();
+                    updateMenuActive();
+                });
+            });
+        }
+
+        // ===== LYRICS =====
+        function getFilteredList() {
+            let list = [...bhajans];
+            if (currentCategory !== 'all' && currentCategory !== 'favourites') {
+                list = list.filter(b => b.category === currentCategory);
+            }
+            if (currentCategory === 'favourites') {
+                list = list.filter(b => favouriteIds.includes(b.id));
+            }
+            if (currentSearch.trim() !== '') {
+                const term = currentSearch.trim().toLowerCase();
+                list = list.filter(b =>
+                    b.title.toLowerCase().includes(term) ||
+                    b.lyrics.toLowerCase().includes(term)
+                );
+            }
+            return list;
+        }
+
+        function openLyrics(id) {
+            currentLyricsId = id;
+            const bhajan = bhajans.find(b => b.id === id);
+            if (!bhajan) return;
+
+            document.getElementById('lyricsTitle').textContent = bhajan.title;
+            document.getElementById('lyricsText').textContent = bhajan.lyrics;
+            document.getElementById('lyricsCategory').textContent = '📂 ' + bhajan.category.toUpperCase();
+
+            const yt = document.getElementById('youtubeLink');
+            if (bhajan.youtube && bhajan.youtube.trim() !== '') {
+                yt.href = bhajan.youtube;
+                yt.classList.remove('hidden');
+            } else {
+                yt.classList.add('hidden');
+            }
+
+            fontSize = 18;
+            document.getElementById('lyricsText').style.fontSize = fontSize + 'px';
+            document.getElementById('lyricsPage').classList.add('open');
+            document.body.style.overflow = 'hidden';
+            history.pushState({ lyrics: true }, '');
+        }
+
+        function closeLyrics() {
+            document.getElementById('lyricsPage').classList.remove('open');
+            document.body.style.overflow = 'auto';
+        }
+
+        function navigate(direction) {
+            const list = getFilteredList();
+            if (list.length === 0) return;
+            let idx = list.findIndex(b => b.id === currentLyricsId);
+            if (idx === -1) return;
+            const newIdx = (idx + direction + list.length) % list.length;
+            openLyrics(list[newIdx].id);
+        }
+
+        // ===== EVENTS =====
+        document.getElementById('lyricsBack').addEventListener('click', closeLyrics);
+        document.getElementById('prevBhajan').addEventListener('click', () => navigate(-1));
+        document.getElementById('nextBhajan').addEventListener('click', () => navigate(1));
+
+        document.getElementById('zoomIn').addEventListener('click', () => {
+            fontSize = Math.min(34, fontSize + 2);
+            document.getElementById('lyricsText').style.fontSize = fontSize + 'px';
+        });
+        document.getElementById('zoomOut').addEventListener('click', () => {
+            fontSize = Math.max(12, fontSize - 2);
+            document.getElementById('lyricsText').style.fontSize = fontSize + 'px';
+        });
+        document.getElementById('zoomReset').addEventListener('click', () => {
+            fontSize = 18;
+            document.getElementById('lyricsText').style.fontSize = fontSize + 'px';
+        });
+
+        document.getElementById('randomBtn').addEventListener('click', () => {
+            const list = getFilteredList();
+            if (list.length === 0) return;
+            const rand = list[Math.floor(Math.random() * list.length)];
+            openLyrics(rand.id);
+        });
+
+        document.getElementById('shareBtn').addEventListener('click', function() {
+            const title = document.getElementById('lyricsTitle').textContent;
+            const text = document.getElementById('lyricsText').textContent;
+            if (navigator.share) {
+                navigator.share({ title, text: '✝️ ' + title + '\n\n' + text });
+            } else {
+                navigator.clipboard.writeText('✝️ ' + title + '\n\n' + text).then(() => {
+                    alert('✅ भजन कपी भयो!');
+                });
+            }
+        });
+
+        window.addEventListener('popstate', function(e) {
+            if (document.getElementById('lyricsPage').classList.contains('open')) {
+                closeLyrics();
+            }
+        });
+
+        // ===== MENU =====
+        function openMenu() {
+            document.getElementById('menuPanel').classList.add('open');
+            document.getElementById('menuOverlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMenu() {
+            document.getElementById('menuPanel').classList.remove('open');
+            document.getElementById('menuOverlay').classList.remove('open');
+            document.body.style.overflow = 'auto';
+        }
+        document.getElementById('menuToggle').addEventListener('click', openMenu);
+        document.getElementById('closeMenu').addEventListener('click', closeMenu);
+        document.getElementById('menuOverlay').addEventListener('click', closeMenu);
+
+        document.querySelectorAll('.menu-panel a[data-category]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                currentCategory = this.dataset.category;
+                currentSearch = document.getElementById('searchInput').value;
+                renderBhajans();
+                updateMenuActive();
+                closeMenu();
+            });
+        });
+
+        document.getElementById('menuFav').addEventListener('click', function(e) {
+            e.preventDefault();
+            currentCategory = 'favourites';
+            currentSearch = document.getElementById('searchInput').value;
+            renderBhajans();
+            updateMenuActive();
+            closeMenu();
+        });
+
+        document.getElementById('menuRandom').addEventListener('click', function(e) {
+            e.preventDefault();
+            const list = getFilteredList();
+            if (list.length === 0) return;
+            const rand = list[Math.floor(Math.random() * list.length)];
+            openLyrics(rand.id);
+            closeMenu();
+        });
+
+        document.getElementById('menuDark').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.body.classList.toggle('dark');
+            this.textContent = document.body.classList.contains('dark') ? '☀️ उज्यालो' : '🌙 रातो मोड';
+            closeMenu();
+        });
+
+        function updateMenuActive() {
+            document.querySelectorAll('.menu-panel a[data-category]').forEach(link => {
+                link.classList.toggle('active', link.dataset.category === currentCategory);
+            });
+        }
+
+        // ===== SEARCH =====
+        document.getElementById('searchInput').addEventListener('input', function() {
+            currentSearch = this.value;
+            renderBhajans();
+        });
+
+        // ===== ADMIN =====
+        document.getElementById('adminToggle').addEventListener('click', function(e) {
+            e.preventDefault();
+            const panel = document.getElementById('adminPanel');
+            panel.classList.toggle('open');
+            if (panel.classList.contains('open')) {
+                document.getElementById('adminPass').value = '';
+                document.getElementById('adminContent').style.display = 'none';
+                document.getElementById('adminStatus').textContent = '';
+                document.getElementById('adminStatus').className = 'status-msg';
+            }
+        });
+
+        document.getElementById('adminLogin').addEventListener('click', function() {
+            const pass = document.getElementById('adminPass').value;
+            if (pass === ADMIN_PASSWORD) {
+                isAdmin = true;
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('adminStatus').textContent = '✅ लगइन सफल';
+                document.getElementById('adminStatus').className = 'status-msg';
+                populateEditSelect();
+            } else {
+                document.getElementById('adminStatus').textContent = '❌ गलत पासवर्ड';
+                document.getElementById('adminStatus').className = 'status-msg error';
+            }
+        });
+
+        document.getElementById('adminLogout').addEventListener('click', function() {
+            isAdmin = false;
+            document.getElementById('adminContent').style.display = 'none';
+            document.getElementById('adminStatus').textContent = '🔒 लगआउट भयो';
+            document.getElementById('adminStatus').className = 'status-msg';
+            document.getElementById('adminPass').value = '';
+        });
+
+        function populateEditSelect() {
+            const sel = document.getElementById('editSelect');
+            sel.innerHTML = '';
+            bhajans.forEach(b => {
+                const opt = document.createElement('option');
+                opt.value = b.id;
+                opt.textContent = b.title + ' (' + b.category + ')';
+                sel.appendChild(opt);
+            });
+            if (bhajans.length) {
+                loadEditForm(bhajans[0].id);
+                document.getElementById('editCategorySelect').value = bhajans[0].category;
+            }
+            sel.addEventListener('change', function() {
+                const id = parseInt(this.value);
+                loadEditForm(id);
+            });
+        }
+
+        function loadEditForm(id) {
+            const b = bhajans.find(x => x.id === id);
+            if (!b) return;
+            document.getElementById('editTitle').value = b.title;
+            document.getElementById('editLyrics').value = b.lyrics;
+            document.getElementById('editCategorySelect').value = b.category;
+            document.getElementById('editYoutube').value = b.youtube || '';
+        }
+
+        document.getElementById('addBhajanBtn').addEventListener('click', function() {
+            if (!isAdmin) return;
+            const title = document.getElementById('newTitle').value.trim();
+            const lyrics = document.getElementById('newLyrics').value.trim();
+            const category = document.getElementById('newCategorySelect').value;
+            const youtube = document.getElementById('newYoutube').value.trim();
+            if (!title || !lyrics) {
+                document.getElementById('adminStatus').textContent = '❌ शीर्षक र गीत अनिवार्य';
+                document.getElementById('adminStatus').className = 'status-msg error';
+                return;
+            }
+            const newId = bhajans.length ? Math.max(...bhajans.map(b => b.id)) + 1 : 1;
+            bhajans.push({ id: newId, title, lyrics, category, youtube });
+            document.getElementById('newTitle').value = '';
+            document.getElementById('newLyrics').value = '';
+            document.getElementById('newYoutube').value = '';
+            document.getElementById('adminStatus').textContent = '✅ भजन थपियो!';
+            document.getElementById('adminStatus').className = 'status-msg';
+            saveData();
+            renderBhajans();
+            populateEditSelect();
+        });
+
+        document.getElementById('updateBhajanBtn').addEventListener('click', function() {
+            if (!isAdmin) return;
+            const id = parseInt(document.getElementById('editSelect').value);
+            const b = bhajans.find(x => x.id === id);
+            if (!b) return;
+            const title = document.getElementById('editTitle').value.trim();
+            const lyrics = document.getElementById('editLyrics').value.trim();
+            const category = document.getElementById('editCategorySelect').value;
+            const youtube = document.getElementById('editYoutube').value.trim();
+            if (!title || !lyrics) {
+                document.getElementById('adminStatus').textContent = '❌ शीर्षक र गीत अनिवार्य';
+                document.getElementById('adminStatus').className = 'status-msg error';
+                return;
+            }
+            b.title = title;
+            b.lyrics = lyrics;
+            b.category = category;
+            b.youtube = youtube;
+            document.getElementById('adminStatus').textContent = '✅ अद्यावधिक भयो!';
+            document.getElementById('adminStatus').className = 'status-msg';
+            saveData();
+            renderBhajans();
+            populateEditSelect();
+        });
+
+        document.getElementById('deleteBhajanBtn').addEventListener('click', function() {
+            if (!isAdmin) return;
+            const id = parseInt(document.getElementById('editSelect').value);
+            if (!confirm('के तपाईं यो भजन मेट्न चाहनुहुन्छ?')) return;
+            bhajans = bhajans.filter(b => b.id !== id);
+            document.getElementById('adminStatus').textContent = '🗑️ मेटियो!';
+            document.getElementById('adminStatus').className = 'status-msg';
+            saveData();
+            renderBhajans();
+            populateEditSelect();
+        });
+
+        // ===== EXPORT / IMPORT =====
+        document.getElementById('exportData').addEventListener('click', function() {
+            if (!isAdmin) {
+                document.getElementById('adminStatus').textContent = '❌ पहिले लगइन गर्नुहोस्';
+                document.getElementById('adminStatus').className = 'status-msg error';
+                return;
+            }
+            if (bhajans.length === 0) {
+                document.getElementById('adminStatus').textContent = '⚠️ कुनै भजन छैन';
+                document.getElementById('adminStatus').className = 'status-msg error';
+                return;
+            }
+            const data = {
+                bhajans: bhajans,
+                favourites: favouriteIds,
+                exportedAt: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tharu_bhajans.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            document.getElementById('adminStatus').textContent = '✅ एक्सपोर्ट भयो!';
+            document.getElementById('adminStatus').className = 'status-msg';
+        });
+
+        document.getElementById('importBtn').addEventListener('click', function() {
+            if (!isAdmin) {
+                document.getElementById('importStatus').textContent = '❌ पहिले लगइन गर्नुहोस्';
+                document.getElementById('importStatus').className = 'status-msg error';
+                return;
+            }
+            document.getElementById('fileInput').click();
+        });
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                try {
+                    const data = JSON.parse(ev.target.result);
+                    if (!data.bhajans || !Array.isArray(data.bhajans)) {
+                        throw new Error('Invalid format');
+                    }
+                    bhajans = data.bhajans;
+                    favouriteIds = data.favourites || [];
+                    saveData();
+                    renderBhajans();
+                    populateEditSelect();
+                    document.getElementById('importStatus').textContent = '✅ ' + bhajans.length + ' भजन इम्पोर्ट भयो!';
+                    document.getElementById('importStatus').className = 'status-msg';
+                } catch (err) {
+                    document.getElementById('importStatus').textContent = '❌ गलत फाइल: ' + err.message;
+                    document.getElementById('importStatus').className = 'status-msg error';
+                }
+            };
+            reader.readAsText(file);
+            this.value = '';
+        });
+
+        // ===== INIT =====
+        renderBhajans();
+    </script>
+</body>
+</html>
